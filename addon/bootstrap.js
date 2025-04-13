@@ -27,6 +27,11 @@ async function startup({ id, version, resourceURI, rootURI }, reason) {
     ["content", "__addonRef__", rootURI + "content/"],
   ]);
 
+  // Register default preferences
+  if (!Zotero.Prefs.get("extensions.zotero.tablimiter.maxTabs")) {
+    Zotero.Prefs.set("extensions.zotero.tablimiter.maxTabs", 10, true);
+  }
+
   /**
    * Global variables for plugin code.
    * The `_globalThis` is the global root variable of the plugin sandbox environment
@@ -43,14 +48,6 @@ async function startup({ id, version, resourceURI, rootURI }, reason) {
     ctx,
   );
   Zotero.__addonInstance__.hooks.onStartup();
-}
-
-async function onMainWindowLoad({ window }, reason) {
-  Zotero.__addonInstance__?.hooks.onMainWindowLoad(window);
-}
-
-async function onMainWindowUnload({ window }, reason) {
-  Zotero.__addonInstance__?.hooks.onMainWindowUnload(window);
 }
 
 function shutdown({ id, version, resourceURI, rootURI }, reason) {

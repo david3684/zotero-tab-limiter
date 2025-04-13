@@ -16,5 +16,9 @@
       "strict_min_version": "6.999",
       "strict_max_version": "7.*"
     }
+  },
+  "options_ui": {
+    "page": "content/preferences.xhtml",
+    "open_in_tab": false
   }
 }

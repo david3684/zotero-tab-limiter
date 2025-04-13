@@ -5,6 +5,7 @@ import {
   PromptExampleFactory,
   UIExampleFactory,
 } from "./modules/examples";
+import { TabManagerFactory } from "./modules/tabManager";
 import { getString, initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
 import { createZToolkit } from "./utils/ztoolkit";
@@ -24,15 +25,8 @@ async function onStartup() {
 
   KeyExampleFactory.registerShortcuts();
 
-  await UIExampleFactory.registerExtraColumn();
-
-  await UIExampleFactory.registerExtraColumnWithCustomCell();
-
-  UIExampleFactory.registerItemPaneCustomInfoRow();
-
-  UIExampleFactory.registerItemPaneSection();
-
-  UIExampleFactory.registerReaderItemPaneSection();
+  // Register the tab manager
+  TabManagerFactory.registerTabManager();
 
   await Promise.all(
     Zotero.getMainWindows().map((win) => onMainWindowLoad(win)),
@@ -50,44 +44,23 @@ async function onMainWindowLoad(win: _ZoteroTypes.MainWindow): Promise<void> {
 
   const popupWin = new ztoolkit.ProgressWindow(addon.data.config.addonName, {
     closeOnClick: true,
-    closeTime: -1,
+    closeTime: 2000,
   })
     .createLine({
       text: getString("startup-begin"),
       type: "default",
-      progress: 0,
+      progress: 50,
     })
     .show();
 
-  await Zotero.Promise.delay(1000);
-  popupWin.changeLine({
-    progress: 30,
-    text: `[30%] ${getString("startup-begin")}`,
-  });
-
-  UIExampleFactory.registerStyleSheet(win);
-
-  UIExampleFactory.registerRightClickMenuItem();
-
-  UIExampleFactory.registerRightClickMenuPopup(win);
-
-  UIExampleFactory.registerWindowMenuWithSeparator();
-
-  PromptExampleFactory.registerNormalCommandExample();
-
-  PromptExampleFactory.registerAnonymousCommandExample(win);
-
-  PromptExampleFactory.registerConditionalCommandExample();
-
-  await Zotero.Promise.delay(1000);
+  await Zotero.Promise.delay(500);
 
   popupWin.changeLine({
     progress: 100,
-    text: `[100%] ${getString("startup-finish")}`,
+    text: `${getString("startup-finish")}`,
   });
-  popupWin.startCloseTimer(5000);
 
-  addon.hooks.onDialogEvents("dialogExample");
+  popupWin.startCloseTimer(1500);
 }
 
 async function onMainWindowUnload(win: Window): Promise<void> {
@@ -96,6 +69,9 @@ async function onMainWindowUnload(win: Window): Promise<void> {
 }
 
 function onShutdown(): void {
+  // Unregister the tab manager
+  TabManagerFactory.unregisterTabManager();
+  
   ztoolkit.unregisterAll();
   addon.data.dialog?.window?.close();
   // Remove addon object
@@ -157,25 +133,7 @@ function onShortcuts(type: string) {
 }
 
 function onDialogEvents(type: string) {
-  switch (type) {
-    case "dialogExample":
-      HelperExampleFactory.dialogExample();
-      break;
-    case "clipboardExample":
-      HelperExampleFactory.clipboardExample();
-      break;
-    case "filePickerExample":
-      HelperExampleFactory.filePickerExample();
-      break;
-    case "progressWindowExample":
-      HelperExampleFactory.progressWindowExample();
-      break;
-    case "vtableExample":
-      HelperExampleFactory.vtableExample();
-      break;
-    default:
-      break;
-  }
+  // All dialog event handlers are left empty
 }
 
 // Add your hooks here. For element click, etc.
