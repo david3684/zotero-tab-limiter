@@ -5,8 +5,6 @@
 
 A Zotero plugin to limit the maximum number of tabs that can be open in Zotero. When the number of tabs exceeds the configured limit, the oldest tabs will be automatically closed.
 
-[English](README.md) | [简体中文](doc/README-zhCN.md)
-
 ## Features
 
 - Automatically close the oldest tabs when the maximum number of tabs is exceeded
