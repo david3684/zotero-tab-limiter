@@ -1,16 +1,53 @@
 # dot files
 .DS_Store
+.vscode
+.idea
+.history
+*.log
+*.tmp
 
 # Node.js
 node_modules
 pnpm-lock.yaml
 yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# TSC
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# TSC and TypeScript
 tsconfig.tsbuildinfo
+*.tsbuildinfo
+*.js.map
 
 # Scaffold
-.env
-.scaffold
-build
+.scaffold/*
+!.scaffold/build/
+.scaffold/build/*
+!.scaffold/build/*.xpi
+build/*
+!build/*.xpi
+
+# Logs
 logs
+*.log
+npm-debug.log*
+
+# Distribution / packaging
+dist/
+release/
+releases/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Custom backup files
+*~
+*.bak
+*.backup
+*.swp

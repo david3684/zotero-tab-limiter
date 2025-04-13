@@ -33,11 +33,25 @@ jobs:
         run: |
           npm run build
 
+      # Find where the XPI file is located
+      - name: Find XPI file
+        id: find_xpi
+        run: |
+          echo "Searching for XPI files..."
+          find . -name "*.xpi" -type f | xargs -I{} echo "Found: {}"
+          
+          if [ -f "build/zotero-tab-limiter.xpi" ]; then
+            echo "xpi_path=build/zotero-tab-limiter.xpi" >> $GITHUB_OUTPUT
+          elif [ -f ".scaffold/build/zotero-tab-limiter.xpi" ]; then
+            echo "xpi_path=.scaffold/build/zotero-tab-limiter.xpi" >> $GITHUB_OUTPUT
+          else
+            find . -name "*.xpi" -type f | head -n 1 | xargs -I{} echo "xpi_path={}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            build/zotero-tab-limiter.xpi
+          files: ${{ steps.find_xpi.outputs.xpi_path }}
           draft: false
           generate_release_notes: true
 
