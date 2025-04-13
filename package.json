@@ -1,7 +1,7 @@
 {
   "name": "zotero-tab-limiter",
   "type": "module",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Zotero plugin to limit the maximum number of open tabs",
   "config": {
     "addonName": "Zotero Tab Limiter",
