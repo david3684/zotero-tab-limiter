@@ -38,22 +38,22 @@ export class TabManager {
           event: string,
           type: string,
           ids: string[] | number[],
-          extraData: { [key: string]: any }
+          extraData: { [key: string]: any },
         ) => {
           if (type === "tab") {
             // 로그 출력 제거: 탭 이벤트 감지 시 알림 표시 안 함
-            
+
             // 탭 추가 이벤트에서 탭 관리
             if (event === "add") {
               // 로그 출력 제거: 추가 시 알림 표시 안 함
               this.manageTabs();
-            } 
+            }
           }
           return;
-        }
+        },
       },
       ["tab"],
-      this.notifierID
+      this.notifierID,
     );
 
     // 주기적으로 설정값 확인 및 탭 관리 (백업 메커니즘)
@@ -61,13 +61,15 @@ export class TabManager {
 
     // 초기 실행 시 현재 탭 관리
     this.manageTabs();
-    
+
     // 현재 설정값 저장
     this.lastMaxTabsSetting = getPref("maxTabs") || 10;
-    
+
     // 시작 메시지는 한 번만 표시
     if (this.enableLogs) {
-      ztoolkit.log(`TabManager registered with max tabs setting: ${this.lastMaxTabsSetting}`);
+      ztoolkit.log(
+        `TabManager registered with max tabs setting: ${this.lastMaxTabsSetting}`,
+      );
     }
   }
 
@@ -77,7 +79,7 @@ export class TabManager {
   private startPeriodicCheck(): void {
     // 이미 타이머가 실행 중이라면 중단
     this.stopPeriodicCheck();
-    
+
     // 메인 Zotero 창 가져오기
     const mainWindow = Zotero.getMainWindow();
     if (!mainWindow) {
@@ -86,17 +88,19 @@ export class TabManager {
       }
       return;
     }
-    
+
     // 주기적으로 설정과 탭 상태 확인
     this.timerID = mainWindow.setInterval(() => {
       try {
         // 현재 설정값 가져오기
         const currentMaxTabs = getPref("maxTabs");
-        
+
         // 설정값이 변경되었는지 확인
         if (currentMaxTabs !== this.lastMaxTabsSetting) {
           if (this.enableLogs) {
-            ztoolkit.log(`Max tabs setting changed: ${this.lastMaxTabsSetting} -> ${currentMaxTabs}`);
+            ztoolkit.log(
+              `Max tabs setting changed: ${this.lastMaxTabsSetting} -> ${currentMaxTabs}`,
+            );
           }
           this.lastMaxTabsSetting = currentMaxTabs;
           this.manageTabs();
@@ -129,7 +133,7 @@ export class TabManager {
   public unregister(): void {
     // 알림 리스너 해제
     Zotero.Notifier.unregisterObserver(this.notifierID);
-    
+
     // 주기적 검사 타이머 중단
     this.stopPeriodicCheck();
   }
@@ -141,7 +145,7 @@ export class TabManager {
   public async manageTabs(): Promise<void> {
     try {
       const maxTabs = getPref("maxTabs");
-      
+
       if (!maxTabs || maxTabs <= 0) {
         return;
       }
@@ -157,17 +161,17 @@ export class TabManager {
 
       // 타입 에러를 우회하기 위해 any 타입 사용
       const zoteroTabs = mainWindow.Zotero_Tabs as any;
-      
+
       // Zotero 7 버전에서는 실제 구현에 따라 메서드 이름이 다를 수 있음
       let tabs: any[] = [];
-      
+
       try {
         // 여러 가지 가능한 메서드 시도
-        if (typeof zoteroTabs.getTabs === 'function') {
+        if (typeof zoteroTabs.getTabs === "function") {
           tabs = zoteroTabs.getTabs();
-        } else if (typeof zoteroTabs.getAll === 'function') {
+        } else if (typeof zoteroTabs.getAll === "function") {
           tabs = zoteroTabs.getAll();
-        } else if (typeof zoteroTabs._tabs !== 'undefined') {
+        } else if (typeof zoteroTabs._tabs !== "undefined") {
           tabs = [...zoteroTabs._tabs];
         } else {
           tabs = [];
@@ -178,18 +182,28 @@ export class TabManager {
         }
         return;
       }
-      
+
       if (tabs.length > maxTabs) {
         // 탭 사용 시간 기준으로 정렬
         const sortedTabs = [...tabs].sort((a: any, b: any) => {
-          const aTime = a._lastAccessed || a.lastAccessed || a.lastAccessTime || a.createTime || 0;
-          const bTime = b._lastAccessed || b.lastAccessed || b.lastAccessTime || b.createTime || 0;
+          const aTime =
+            a._lastAccessed ||
+            a.lastAccessed ||
+            a.lastAccessTime ||
+            a.createTime ||
+            0;
+          const bTime =
+            b._lastAccessed ||
+            b.lastAccessed ||
+            b.lastAccessTime ||
+            b.createTime ||
+            0;
           return aTime - bTime;
         });
 
         // 가장 오래된 탭 목록
         const tabsToClose = sortedTabs.slice(0, tabs.length - maxTabs);
-        
+
         // 각 탭 닫기
         for (const tab of tabsToClose) {
           try {
@@ -198,9 +212,9 @@ export class TabManager {
           } catch (closeError) {
             // 다른 방법으로 시도
             try {
-              if (typeof zoteroTabs.closeTab === 'function') {
+              if (typeof zoteroTabs.closeTab === "function") {
                 zoteroTabs.closeTab(tab.id);
-              } else if (typeof zoteroTabs._closeTab === 'function') {
+              } else if (typeof zoteroTabs._closeTab === "function") {
                 zoteroTabs._closeTab(tab.id);
               }
             } catch (alternativeError) {

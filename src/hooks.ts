@@ -71,7 +71,7 @@ async function onMainWindowUnload(win: Window): Promise<void> {
 function onShutdown(): void {
   // Unregister the tab manager
   TabManagerFactory.unregisterTabManager();
-  
+
   ztoolkit.unregisterAll();
   addon.data.dialog?.window?.close();
   // Remove addon object

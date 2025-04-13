@@ -50,23 +50,28 @@ Zotero标签页限制器是一个用于限制Zotero中可以打开的标签页�
 ### 开发设置
 
 1. 克隆存储库
+
 ```bash
 git clone https://github.com/yourusername/zotero-tab-limiter.git
 cd zotero-tab-limiter
 ```
 
 2. 安装依赖
+
 ```bash
 npm install
 ```
 
 3. 复制环境变量文件并配置
+
 ```bash
 cp .env.example .env
 ```
+
 更新`.env`文件，填入您的Zotero安装路径和配置文件
 
 4. 启动开发服务器
+
 ```bash
 npm start
 ```
@@ -88,6 +93,7 @@ npm run release
 ```
 
 这将：
+
 1. 提示输入新版本号
 2. 更新package.json中的版本
 3. 创建git标签
