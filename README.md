@@ -16,7 +16,7 @@ A Zotero plugin to limit the maximum number of tabs that can be open in Zotero. 
 
 ## Installation
 
-- Download the latest release (.xpi file) from the [Releases page](https://github.com/yourusername/zotero-tab-limiter/releases)
+- Download the latest release (.xpi file) from the [Releases page](https://github.com/david3684/zotero-tab-limiter/releases)
 - In Zotero, go to Tools → Add-ons
 - Click the gear icon and select "Install Add-on From File..."
 - Select the downloaded .xpi file
@@ -41,58 +41,6 @@ Once installed and configured, the plugin works automatically in the background:
 ## Development
 
 This plugin is built using the [Zotero Plugin Template](https://github.com/windingwind/zotero-plugin-template).
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v14 or later)
-- [Zotero 7](https://www.zotero.org/support/beta_builds) (beta)
-
-### Setup for Development
-
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/zotero-tab-limiter.git
-cd zotero-tab-limiter
-```
-
-2. Install dependencies
-```bash
-npm install
-```
-
-3. Copy the environment variable file and configure it
-```bash
-cp .env.example .env
-```
-Update the `.env` file with your Zotero installation path and profile
-
-4. Start the development server
-```bash
-npm start
-```
-
-### Building
-
-```bash
-npm run build
-```
-
-The built plugin will be in the `build` directory.
-
-## Releasing
-
-To create a new release:
-
-```bash
-npm run release
-```
-
-This will:
-1. Prompt for a new version number
-2. Update the version in package.json
-3. Create a git tag
-4. Push changes to GitHub
-5. GitHub Actions will build the plugin and create a release
 
 ## License
 

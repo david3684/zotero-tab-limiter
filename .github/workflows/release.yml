@@ -34,9 +34,12 @@ jobs:
           npm run build
 
       - name: Release to GitHub
-        run: |
-          npm run release
-          sleep 1s
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/zotero-tab-limiter.xpi
+          draft: false
+          generate_release_notes: true
 
       - name: Notify release
         uses: apexskier/github-release-commenter@v1

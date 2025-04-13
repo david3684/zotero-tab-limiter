@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/zotero-tab-limiter.git"
+    "url": "git+https://github.com/david3684/zotero-tab-limiter.git"
   },
-  "author": "your name",
+  "author": "david3684",
   "bugs": {
-    "url": "https://github.com/yourusername/zotero-tab-limiter/issues"
+    "url": "https://github.com/david3684/zotero-tab-limiter/issues"
   },
-  "homepage": "https://github.com/yourusername/zotero-tab-limiter#readme",
+  "homepage": "https://github.com/david3684/zotero-tab-limiter#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
