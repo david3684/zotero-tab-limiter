@@ -39,7 +39,7 @@ jobs:
         run: |
           echo "Searching for XPI files..."
           find . -name "*.xpi" -type f | xargs -I{} echo "Found: {}"
-          
+
           if [ -f "build/zotero-tab-limiter.xpi" ]; then
             echo "xpi_path=build/zotero-tab-limiter.xpi" >> $GITHUB_OUTPUT
           elif [ -f ".scaffold/build/zotero-tab-limiter.xpi" ]; then
